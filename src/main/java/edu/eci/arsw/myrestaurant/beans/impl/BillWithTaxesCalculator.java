@@ -6,6 +6,7 @@ import edu.eci.arsw.myrestaurant.beans.BillCalculator;
 import edu.eci.arsw.myrestaurant.beans.TaxesCalculator;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class BillWithTaxesCalculator implements BillCalculator {
 
     @Autowired
+    @Qualifier("StandardTaxesCalculator")
     TaxesCalculator taxescalc;
 
     @Override
