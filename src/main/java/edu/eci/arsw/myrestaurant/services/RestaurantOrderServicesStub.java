@@ -5,19 +5,44 @@ import edu.eci.arsw.myrestaurant.model.Order;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.beans.BillCalculator;
 import edu.eci.arsw.myrestaurant.model.ProductType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class RestaurantOrderServicesStub implements RestaurantOrderServices {
 
-    
-    BillCalculator calc = null;
+    @Autowired
+    @Qualifier("BasicBillCalculator")
+    BillCalculator calc;
 
     public RestaurantOrderServicesStub() {
     }
+    public List<Map<String, Object>> getAllOrdersWithTotals() {
+    List<Map<String, Object>> orders = new ArrayList<>();
 
+    for (Integer tableNumber : tableOrders.keySet()) {
+        Order order = tableOrders.get(tableNumber);
+
+        int total = calc.calculateBill(order, productsMap);
+
+        Map<String, Object> orderMap = new HashMap<>();
+        orderMap.put("tableNumber", tableNumber);
+        orderMap.put("products", order.getOrderedDishes());
+        orderMap.put("total", total);
+
+        orders.add(orderMap);
+    }
+
+    return orders;
+}
     public void setBillCalculator(BillCalculator calc) {
         this.calc = calc;
     }

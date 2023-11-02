@@ -21,10 +21,15 @@ import edu.eci.arsw.myrestaurant.model.ProductType;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.services.RestaurantOrderServicesStub;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +39,16 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author hcadavid
  */
+@RestController
+@RequestMapping("/orders")
 public class OrdersAPIController {
-
+    @Autowired
+    RestaurantOrderServicesStub restaurantOrderServicesStub;
+    
+    @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> getAllOrdersWithTotals() {
+        List<Map<String, Object>> orders = restaurantOrderServicesStub.getAllOrdersWithTotals();
+        return ResponseEntity.ok(orders);
+    }
     
 }
